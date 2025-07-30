@@ -5,10 +5,9 @@
 }
 
 .header {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
+  background: rgba(2, 8, 23, 0.95);
+  backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(78, 122, 255, 0.2);
-  padding: 0.75rem 0;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -17,17 +16,19 @@
 .headerContent {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 1rem 2rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .logo {
-  color: #4e7aff;
   font-size: 1.5rem;
-  font-weight: 800;
-  margin: 0;
+  font-weight: 700;
+  background: linear-gradient(135deg, #4e7aff 0%, #5C75BF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .logoContainer {
@@ -71,58 +72,83 @@
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
-/* Десктопная навигация */
+
+
 .navigation {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
+  align-items: center;
 }
 
 .desktopNav {
   display: flex;
 }
 
-.navBtn {
-  background: transparent;
+.desktopUserSection {
+  display: flex;
+}
+
+.navLink {
   color: #b0b8d0;
-  border: 1px solid rgba(78, 122, 255, 0.2);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
   transition: all 0.2s;
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
   font-size: 1rem;
-  font-weight: 600;
 }
 
-.navBtn:hover {
+.navLink:hover {
+  color: #fff;
   background: rgba(78, 122, 255, 0.1);
-  border-color: #4e7aff;
-  color: #fff;
 }
 
-.navBtn.active {
+.navLink.active {
+  color: #4e7aff;
+  background: rgba(78, 122, 255, 0.1);
+}
+
+.navLink.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
   background: linear-gradient(135deg, #4e7aff 0%, #5C75BF 100%);
-  color: #fff;
-  border-color: #4e7aff;
+  border-radius: 1px;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userName {
+  color: #b0b8d0;
+  font-weight: 500;
 }
 
 .logoutBtn {
-  background: transparent;
-  color: #fca5a5;
-  border: 1px solid rgba(252, 165, 165, 0.3);
-  border-radius: 6px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
   padding: 0.5rem 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 0.9rem;
 }
 
 .logoutBtn:hover {
-  background: rgba(252, 165, 165, 0.1);
-  border-color: #fca5a5;
-}
-
-.desktopLogout {
-  display: block;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
 /* Мобильная навигация */
@@ -212,6 +238,8 @@
   border-color: #fca5a5;
   transform: translateX(5px);
 }
+
+
 
 .main {
   max-width: 1200px;
@@ -566,7 +594,10 @@
 /* Адаптивность */
 @media (max-width: 768px) {
   .headerContent {
-    padding: 0 1rem;
+    padding: 1rem;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
   
   .burgerMenu {
@@ -574,7 +605,7 @@
   }
   
   .desktopNav,
-  .desktopLogout {
+  .desktopUserSection {
     display: none;
   }
   
@@ -1097,7 +1128,7 @@
   right: 20px;
   z-index: 2000;
   max-width: 400px;
-  width: 100%;
+    width: 100%;
   border-radius: 12px;
   backdrop-filter: blur(20px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -1191,5 +1222,85 @@
   .notificationClose {
     top: 0.25rem;
     right: 0.25rem;
+  }
+}
+
+/* Секция квизов в dashboard */
+.quizzesOverview {
+  text-align: center;
+  padding: 2rem;
+}
+
+.quizzesDescription {
+  color: #b0b8d0;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.quizzesPreview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.quizPreviewCard {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(78, 122, 255, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  backdrop-filter: blur(20px);
+  transition: all 0.3s;
+}
+
+.quizPreviewCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(78, 122, 255, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.quizPreviewCard h3 {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.quizPreviewCard p {
+  color: #b0b8d0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.viewAllQuizzesBtn {
+  background: linear-gradient(135deg, #4e7aff 0%, #5C75BF 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+
+.viewAllQuizzesBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(78, 122, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .quizzesPreview {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .quizPreviewCard {
+    padding: 1.25rem;
+  }
+  
+  .quizzesOverview {
+    padding: 1rem;
   }
 } 

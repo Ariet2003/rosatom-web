@@ -118,6 +118,8 @@ export default function DashboardPage() {
     };
   }, [mobileMenuOpen]);
 
+
+
   // Функция для показа уведомлений
   const showNotification = (type: 'success' | 'error', message: string) => {
     setNotification({ type, message, show: true });
@@ -143,6 +145,10 @@ export default function DashboardPage() {
   };
 
   const handleSectionChange = (section: string) => {
+    if (section === 'quizzes') {
+      router.push('/quizzes');
+      return;
+    }
     setActiveSection(section);
     setMobileMenuOpen(false);
   };
@@ -318,23 +324,31 @@ export default function DashboardPage() {
       case 'quizzes':
         return (
           <div className={styles.sectionContent}>
-            <h2>Квизы</h2>
-            <div className={styles.quizGrid}>
-              <div className={styles.quizCard}>
-                <h3>Основы атомной энергетики</h3>
-                <p>Тест по базовым принципам работы атомных электростанций</p>
-                <button className={styles.quizBtn}>Начать квиз</button>
+            <div className={styles.quizzesOverview}>
+              <h2>Квизы</h2>
+              <p className={styles.quizzesDescription}>
+                Проверьте свои знания в области атомной энергетики и маломощных модульных реакторов
+              </p>
+              <div className={styles.quizzesPreview}>
+                <div className={styles.quizPreviewCard}>
+                  <h3>🧩 Основы маломощных реакторов</h3>
+                  <p>Базовый тест по пониманию ММР</p>
+                </div>
+                <div className={styles.quizPreviewCard}>
+                  <h3>🚀 Применение ММР</h3>
+                  <p>Оценка знаний о применениях маломощных реакторов</p>
+                </div>
+                <div className={styles.quizPreviewCard}>
+                  <h3>🛡️ Безопасность ММР</h3>
+                  <p>Проверка знаний по вопросам безопасности ММР</p>
+                </div>
               </div>
-              <div className={styles.quizCard}>
-                <h3>Безопасность на АЭС</h3>
-                <p>Проверьте свои знания о мерах безопасности</p>
-                <button className={styles.quizBtn}>Начать квиз</button>
-              </div>
-              <div className={styles.quizCard}>
-                <h3>Экология и атомная энергия</h3>
-                <p>Влияние атомной энергетики на окружающую среду</p>
-                <button className={styles.quizBtn}>Начать квиз</button>
-              </div>
+              <button 
+                onClick={() => router.push('/quizzes')}
+                className={styles.viewAllQuizzesBtn}
+              >
+                Посмотреть все квизы
+              </button>
             </div>
           </div>
         );
@@ -408,29 +422,32 @@ export default function DashboardPage() {
           {/* Десктопная навигация */}
           <nav className={`${styles.navigation} ${styles.desktopNav}`}>
             <button 
-              className={`${styles.navBtn} ${activeSection === 'profile' ? styles.active : ''}`}
+              className={`${styles.navLink} ${activeSection === 'profile' ? styles.active : ''}`}
               onClick={() => handleSectionChange('profile')}
             >
               Профиль
             </button>
             <button 
-              className={`${styles.navBtn} ${activeSection === 'quizzes' ? styles.active : ''}`}
+              className={`${styles.navLink} ${activeSection === 'quizzes' ? styles.active : ''}`}
               onClick={() => handleSectionChange('quizzes')}
             >
               Квизы
             </button>
             <button 
-              className={`${styles.navBtn} ${activeSection === 'results' ? styles.active : ''}`}
+              className={`${styles.navLink} ${activeSection === 'results' ? styles.active : ''}`}
               onClick={() => handleSectionChange('results')}
             >
               Результаты
             </button>
           </nav>
 
-          {/* Десктопная кнопка выхода */}
-          <button onClick={handleLogout} className={`${styles.logoutBtn} ${styles.desktopLogout}`}>
-            Выйти
-          </button>
+          {/* Десктопная секция пользователя */}
+          <div className={`${styles.userSection} ${styles.desktopUserSection}`}>
+            <span className={styles.userName}>{user?.fullName}</span>
+            <button onClick={handleLogout} className={styles.logoutBtn}>
+              Выйти
+            </button>
+          </div>
         </div>
 
         {/* Мобильная навигация */}
