@@ -165,6 +165,25 @@
   border-color: rgba(78, 122, 255, 0.4);
 }
 
+.viewDetails {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.viewDetailsText {
+  color: #4e7aff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.resultCard:hover .viewDetailsText {
+  opacity: 1;
+}
+
 .resultHeader {
   display: flex;
   justify-content: space-between;

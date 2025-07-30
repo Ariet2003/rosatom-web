@@ -130,7 +130,12 @@ export default function ResultsPage() {
 
         <div className={styles.resultsGrid}>
           {sessions.map((session) => (
-            <div key={session.id} className={styles.resultCard}>
+            <div 
+              key={session.id} 
+              className={styles.resultCard}
+              onClick={() => router.push(`/results/${session.id}`)}
+              style={{ cursor: 'pointer' }}
+            >
               <div className={styles.resultHeader}>
                 <h3 className={styles.resultTitle}>{session.test.title}</h3>
                 <div className={styles.resultScore}>
@@ -174,6 +179,10 @@ export default function ResultsPage() {
                     {session.finishedAt ? 'Завершен' : 'В процессе'}
                   </span>
                 </div>
+              </div>
+              
+              <div className={styles.viewDetails}>
+                <span className={styles.viewDetailsText}>Нажмите для просмотра деталей</span>
               </div>
             </div>
           ))}
