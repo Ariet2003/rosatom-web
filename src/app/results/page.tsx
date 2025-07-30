@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -21,6 +21,9 @@ export default function ResultsPage() {
   const [sessions, setSessions] = useState<TestSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     // Проверяем аутентификацию
@@ -47,6 +50,28 @@ export default function ResultsPage() {
       fetchResults();
     }
   }, [user]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        burgerRef.current &&
+        !burgerRef.current.contains(event.target as Node)
+      ) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   const fetchResults = async () => {
     try {
@@ -99,7 +124,7 @@ export default function ResultsPage() {
             <h1 className={styles.logo}>StartAtom</h1>
           </div>
           
-          <nav className={styles.navigation}>
+          <nav className={styles.desktopNav}>
             <Link href="/dashboard" className={styles.navLink}>
               Профиль
             </Link>
@@ -111,11 +136,52 @@ export default function ResultsPage() {
             </Link>
           </nav>
 
-          <div className={styles.userSection}>
+          <div className={styles.desktopUserSection}>
             <span className={styles.userName}>{user?.fullName}</span>
             <button onClick={handleLogout} className={styles.logoutBtn}>
               Выйти
             </button>
+          </div>
+
+          {/* Бургер меню для мобильных устройств */}
+          <button
+            ref={burgerRef}
+            className={styles.burgerMenu}
+            onClick={toggleMobileMenu}
+            aria-label="Открыть меню"
+          >
+            <span className={`${styles.burgerLine} ${mobileMenuOpen ? styles.active : ''}`}></span>
+            <span className={`${styles.burgerLine} ${mobileMenuOpen ? styles.active : ''}`}></span>
+            <span className={`${styles.burgerLine} ${mobileMenuOpen ? styles.active : ''}`}></span>
+          </button>
+
+          {/* Мобильная навигация */}
+          <div
+            ref={mobileMenuRef}
+            className={`${styles.mobileNavigation} ${mobileMenuOpen ? styles.open : ''}`}
+          >
+            <div className={styles.mobileNavContent}>
+              <div className={styles.mobileNavBtn}>
+                <Link href="/dashboard" className={styles.mobileNavIcon}>
+                  👤 Профиль
+                </Link>
+              </div>
+              <div className={styles.mobileNavBtn}>
+                <Link href="/quizzes" className={styles.mobileNavIcon}>
+                  📝 Квизы
+                </Link>
+              </div>
+              <div className={styles.mobileNavBtn}>
+                <Link href="/results" className={styles.mobileNavIcon}>
+                  📊 Результаты
+                </Link>
+              </div>
+              <div className={styles.mobileLogoutBtn}>
+                <button onClick={handleLogout} className={styles.logoutBtn}>
+                  Выйти
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </header>
