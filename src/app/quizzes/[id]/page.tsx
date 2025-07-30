@@ -46,6 +46,7 @@ export default function QuizPage() {
     correctAnswers: number;
     totalQuestions: number;
     percentage: number;
+    totalScore: number;
   } | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -306,16 +307,17 @@ export default function QuizPage() {
               </div>
             </div>
             
-                         <div className={styles.quizInstructions}>
-               <h3>Инструкции:</h3>
-               <ul>
-                 <li>Внимательно прочитайте каждый вопрос</li>
-                 <li>Для вопросов с вариантами выберите один правильный ответ</li>
-                 <li>Для открытых вопросов введите свой ответ в текстовом поле</li>
-                 <li>Можно вернуться к предыдущим вопросам</li>
-                 <li>После завершения результаты будут сохранены</li>
-               </ul>
-             </div>
+                                       <div className={styles.quizInstructions}>
+                <h3>Инструкции:</h3>
+                <ul>
+                  <li>Внимательно прочитайте каждый вопрос</li>
+                  <li>Для вопросов с вариантами выберите один правильный ответ</li>
+                  <li>Для открытых вопросов введите свой ответ в текстовом поле</li>
+                  <li>Можно пропустить вопросы, на которые не знаете ответ</li>
+                  <li>Можно вернуться к предыдущим вопросам</li>
+                  <li>После завершения результаты будут сохранены</li>
+                </ul>
+              </div>
             
             <div className={styles.quizActions}>
               <button onClick={startQuiz} className={styles.startQuizBtn}>
@@ -333,22 +335,28 @@ export default function QuizPage() {
               <h2>{test.title}</h2>
             </div>
             
-            <div className={styles.resultsContent}>
-              <div className={styles.resultCard}>
-                <div className={styles.resultScore}>
-                  <span className={styles.scoreNumber}>{results?.correctAnswers}</span>
-                  <span className={styles.scoreTotal}>из {results?.totalQuestions}</span>
-                </div>
-                <div className={styles.resultPercentage}>
-                  {results?.percentage}%
-                </div>
-                <div className={styles.resultMessage}>
-                  {results && results.percentage >= 80 ? 'Отлично!' : 
-                   results && results.percentage >= 60 ? 'Хорошо!' : 
-                   results && results.percentage >= 40 ? 'Удовлетворительно' : 'Попробуйте еще раз'}
-                </div>
-              </div>
-            </div>
+                         <div className={styles.resultsContent}>
+               <div className={styles.resultCard}>
+                 <div className={styles.resultScoresRow}>
+                   <div className={styles.resultScore}>
+                     <span className={styles.scoreNumber}>{results?.correctAnswers}</span>
+                     <span className={styles.scoreTotal}>из {results?.totalQuestions} вопросов</span>
+                   </div>
+                   <div className={styles.resultScore}>
+                     <span className={styles.scoreNumber}>{results?.totalScore}</span>
+                     <span className={styles.scoreTotal}>баллов заработано</span>
+                   </div>
+                 </div>
+                 <div className={styles.resultPercentage}>
+                   {results?.percentage}%
+                 </div>
+                 <div className={styles.resultMessage}>
+                   {results && results.percentage >= 80 ? '🎉 Отлично! Превосходный результат!' : 
+                    results && results.percentage >= 60 ? '👍 Хорошо! Вы справились!' : 
+                    results && results.percentage >= 40 ? '✅ Удовлетворительно. Есть куда расти!' : '💪 Попробуйте еще раз, у вас получится!'}
+                 </div>
+               </div>
+             </div>
             
             <div className={styles.resultsActions}>
               <button onClick={goToResults} className={styles.viewResultsBtn}>
@@ -417,21 +425,12 @@ export default function QuizPage() {
               </button>
               
               {currentQuestionIndex === test.questions.length - 1 ? (
-                                 <button 
+                                                  <button 
                    onClick={submitQuiz}
                    className={styles.submitBtn}
-                   disabled={
-                     !test.questions.every(question => {
-                       if (question.type === 'MULTIPLE_CHOICE') {
-                         return selectedAnswers[question.id] !== undefined;
-                       } else {
-                         return textAnswers[question.id] && textAnswers[question.id].trim() !== '';
-                       }
-                     })
-                   }
                  >
-                  Завершить квиз
-                </button>
+                   Завершить квиз
+                 </button>
               ) : (
                 <button 
                   onClick={nextQuestion}

@@ -81,66 +81,191 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Подсчитываем правильные ответы
-    let correctAnswers = 0;
-    const totalQuestions = test.questions.length;
-
-    for (const question of test.questions) {
-      if (question.type === 'MULTIPLE_CHOICE') {
-        const userAnswer = answers?.[question.id];
-        const correctOption = question.options[0]; // Предполагаем, что правильный ответ один
-
-        if (userAnswer && correctOption && userAnswer === correctOption.id) {
-          correctAnswers++;
-        }
-      } else if (question.type === 'OPEN') {
-        const userTextAnswer = textAnswers?.[question.id];
-        // Для открытых вопросов считаем ответ правильным, если он не пустой
-        if (userTextAnswer && userTextAnswer.trim() !== '') {
-          correctAnswers++;
-        }
-      }
-    }
-
-    const percentage = Math.round((correctAnswers / totalQuestions) * 100);
-
     // Создаем сессию теста
     const testSession = await prisma.testSession.create({
       data: {
         testId: testId,
         userId: userId,
-        totalScore: correctAnswers,
+        totalScore: 0, // Временно 0, обновим после сохранения ответов
         startedAt: new Date(),
         finishedAt: new Date(),
       }
     });
 
-    // Сохраняем ответы пользователя
-    for (const [questionId, optionId] of Object.entries(answers || {})) {
-      await prisma.answer.create({
-        data: {
-          testSessionId: testSession.id,
-          questionId: parseInt(questionId),
-          selectedOptionId: optionId as number,
+    // Сохраняем ответы пользователя с баллами
+    let totalScore = 0;
+    let correctAnswers = 0;
+
+    for (const question of test.questions) {
+      let aiScore = 0;
+      let aiFeedback = null;
+      
+      if (question.type === 'MULTIPLE_CHOICE') {
+        const userAnswer = answers?.[question.id];
+        const correctOption = question.options[0];
+        
+        if (userAnswer && correctOption && userAnswer === correctOption.id) {
+          aiScore = question.score; // Полный балл за правильный ответ
+          correctAnswers++;
         }
-      });
+        
+        const answer = await prisma.answer.create({
+          data: {
+            testSessionId: testSession.id,
+            questionId: question.id,
+            selectedOptionId: userAnswer || null,
+            aiScore: aiScore,
+          }
+        });
+      } else if (question.type === 'OPEN') {
+        const userTextAnswer = textAnswers?.[question.id];
+        
+        if (userTextAnswer && userTextAnswer.trim() !== '') {
+          correctAnswers++;
+          
+          // Оцениваем ответ через ИИ
+          try {
+            const aiResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/ai-evaluate`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                questionText: question.text,
+                userAnswer: userTextAnswer,
+                maxScore: question.score
+              }),
+            });
+
+            if (aiResponse.ok) {
+              const aiResult = await aiResponse.json();
+              aiScore = aiResult.score;
+              aiFeedback = aiResult.feedback;
+            } else {
+              // Если ИИ недоступен, даем полный балл за любой ответ
+              aiScore = question.score;
+            }
+          } catch (error) {
+            console.error('Ошибка оценки ИИ:', error);
+            // Если ИИ недоступен, даем полный балл за любой ответ
+            aiScore = question.score;
+          }
+        }
+        
+        const answer = await prisma.answer.create({
+          data: {
+            testSessionId: testSession.id,
+            questionId: question.id,
+            openAnswer: userTextAnswer || null,
+            aiScore: aiScore,
+          }
+        });
+
+        // Создаем запись в AiFeedback если есть обратная связь
+        if (aiFeedback) {
+          await prisma.aiFeedback.create({
+            data: {
+              answerId: answer.id,
+              feedback: aiFeedback,
+              score: aiScore,
+            }
+          });
+        }
+      }
+      
+      totalScore += aiScore;
     }
 
-    // Сохраняем текстовые ответы пользователя
-    for (const [questionId, textAnswer] of Object.entries(textAnswers || {})) {
-      await prisma.answer.create({
-        data: {
-          testSessionId: testSession.id,
-          questionId: parseInt(questionId),
-          openAnswer: textAnswer,
+    // Обновляем общий балл в сессии
+    await prisma.testSession.update({
+      where: { id: testSession.id },
+      data: { totalScore: totalScore }
+    });
+
+    const totalQuestions = test.questions.length;
+    const percentage = Math.round((correctAnswers / totalQuestions) * 100);
+
+    // Сохраняем ответы пользователя с баллами
+    for (const question of test.questions) {
+      let aiScore = 0;
+      let aiFeedback = null;
+      
+      if (question.type === 'MULTIPLE_CHOICE') {
+        const userAnswer = answers?.[question.id];
+        const correctOption = question.options[0];
+        
+        if (userAnswer && correctOption && userAnswer === correctOption.id) {
+          aiScore = question.score; // Полный балл за правильный ответ
         }
-      });
+        
+        const answer = await prisma.answer.create({
+          data: {
+            testSessionId: testSession.id,
+            questionId: question.id,
+            selectedOptionId: userAnswer || null,
+            aiScore: aiScore,
+          }
+        });
+      } else if (question.type === 'OPEN') {
+        const userTextAnswer = textAnswers?.[question.id];
+        
+        if (userTextAnswer && userTextAnswer.trim() !== '') {
+          // Оцениваем ответ через ИИ
+          try {
+            const aiResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/ai-evaluate`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                questionText: question.text,
+                userAnswer: userTextAnswer,
+                maxScore: question.score
+              }),
+            });
+
+            if (aiResponse.ok) {
+              const aiResult = await aiResponse.json();
+              aiScore = aiResult.score;
+              aiFeedback = aiResult.feedback;
+            } else {
+              // Если ИИ недоступен, даем полный балл за любой ответ
+              aiScore = question.score;
+            }
+          } catch (error) {
+            console.error('Ошибка оценки ИИ:', error);
+            // Если ИИ недоступен, даем полный балл за любой ответ
+            aiScore = question.score;
+          }
+        }
+        
+        const answer = await prisma.answer.create({
+          data: {
+            testSessionId: testSession.id,
+            questionId: question.id,
+            openAnswer: userTextAnswer || null,
+            aiScore: aiScore,
+          }
+        });
+
+        // Создаем запись в AiFeedback если есть обратная связь
+        if (aiFeedback) {
+          await prisma.aiFeedback.create({
+            data: {
+              answerId: answer.id,
+              feedback: aiFeedback,
+              score: aiScore,
+            }
+          });
+        }
+      }
     }
 
     return NextResponse.json({
       correctAnswers,
       totalQuestions,
       percentage,
+      totalScore,
       sessionId: testSession.id
     });
   } catch (error) {

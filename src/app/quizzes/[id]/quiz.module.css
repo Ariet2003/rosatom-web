@@ -550,69 +550,142 @@
 /* Результаты квиза */
 .quizResults {
   text-align: center;
-  max-width: 500px;
+  max-width: 600px;
   margin: 0 auto;
+  padding: 1rem;
 }
 
 .resultsHeader {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.resultsHeader::after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(135deg, #4e7aff 0%, #5C75BF 100%);
+  border-radius: 2px;
 }
 
 .resultsHeader h1 {
   font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #fff;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+  background: linear-gradient(135deg, #fff 0%, #b0b8d0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
 }
 
 .resultsHeader h2 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 600;
   color: #4e7aff;
+  text-shadow: 0 0 20px rgba(78, 122, 255, 0.3);
 }
 
 .resultsContent {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .resultCard {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(78, 122, 255, 0.2);
-  border-radius: 16px;
-  padding: 2rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(78, 122, 255, 0.05) 100%);
+  border: 1px solid rgba(78, 122, 255, 0.3);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
   backdrop-filter: blur(20px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.resultCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #4e7aff 50%, transparent 100%);
+}
+
+.resultScoresRow {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
 .resultScore {
   display: flex;
-  justify-content: center;
-  align-items: baseline;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1rem;
+  background: rgba(78, 122, 255, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(78, 122, 255, 0.2);
+  flex: 1;
+  max-width: 200px;
 }
 
 .scoreNumber {
   font-size: 3rem;
-  font-weight: 700;
-  color: #4e7aff;
+  font-weight: 800;
+  background: linear-gradient(135deg, #4e7aff 0%, #5C75BF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(78, 122, 255, 0.5);
+  line-height: 1;
 }
 
 .scoreTotal {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   color: #b0b8d0;
+  font-weight: 500;
 }
 
 .resultPercentage {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #fff;
+  font-size: 2.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 0%, #4e7aff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-bottom: 1rem;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+  line-height: 1;
 }
 
 .resultMessage {
   font-size: 1.2rem;
-  font-weight: 600;
-  color: #b0b8d0;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+  padding: 0.8rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 .resultsActions {
@@ -620,23 +693,42 @@
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
+  margin-top: 1rem;
 }
 
 .viewResultsBtn {
   background: linear-gradient(135deg, #4e7aff 0%, #5C75BF 100%);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
   font-size: 1rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(78, 122, 255, 0.2);
+}
+
+.viewResultsBtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.viewResultsBtn:hover::before {
+  left: 100%;
 }
 
 .viewResultsBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(78, 122, 255, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(78, 122, 255, 0.4);
 }
 
 /* Адаптивность */
@@ -709,15 +801,51 @@
     min-width: 0;
   }
   
-  .resultCard {
-    padding: 1.5rem;
+    .quizResults {
+    padding: 0.5rem;
   }
-  
+
+  .resultsHeader h1 {
+    font-size: 1.8rem;
+  }
+
+  .resultsHeader h2 {
+    font-size: 1.2rem;
+  }
+
+  .resultCard {
+    padding: 1.5rem 1rem;
+    border-radius: 16px;
+  }
+
+  .resultScoresRow {
+    gap: 0.8rem;
+  }
+
+  .resultScore {
+    padding: 0.8rem;
+    max-width: 150px;
+  }
+
   .scoreNumber {
     font-size: 2.5rem;
   }
-  
+
   .resultPercentage {
-    font-size: 2rem;
+    font-size: 2.2rem;
+  }
+
+  .resultMessage {
+    font-size: 1.1rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .resultsActions {
+    gap: 0.8rem;
+  }
+
+  .viewResultsBtn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
   }
 } 
