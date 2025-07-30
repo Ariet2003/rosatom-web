@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
+import { cookies } from 'next/headers';
 
 export async function POST(request: NextRequest) {
   try {
@@ -57,13 +58,28 @@ export async function POST(request: NextRequest) {
         password: hashedPassword,
         roleId: parseInt(roleId),
       },
-      select: {
-        id: true,
-        email: true,
-        fullName: true,
-        roleId: true,
-        createdAt: true,
+      include: {
+        role: true,
       },
+    });
+
+    // Подготавливаем данные пользователя для ответа
+    const userData = {
+      id: user.id,
+      email: user.email,
+      fullName: user.fullName,
+      roleId: user.roleId,
+      roleName: user.role.name,
+      createdAt: user.createdAt,
+    };
+
+    // Устанавливаем куки аутентификации
+    const cookieStore = await cookies();
+    cookieStore.set('auth_token', JSON.stringify(userData), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60, // 7 дней
     });
 
     console.log('Пользователь успешно зарегистрирован:', {
@@ -76,7 +92,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { 
         message: 'Пользователь успешно зарегистрирован',
-        user
+        user: userData
       },
       { status: 201 }
     );

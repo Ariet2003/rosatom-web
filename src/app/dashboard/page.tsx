@@ -10,6 +10,7 @@ interface User {
   email: string;
   fullName: string;
   roleId: number;
+  roleName?: string;
   createdAt: string;
 }
 
@@ -39,10 +40,20 @@ export default function DashboardPage() {
     }
   }, [router]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('isAuthenticated');
-    router.push('/');
+  const handleLogout = async () => {
+    try {
+      // Вызываем API для очистки куки на сервере
+      await fetch('/api/auth/logout', { method: 'POST' });
+      
+      // Очищаем локальные данные
+      localStorage.removeItem('user');
+      localStorage.removeItem('isAuthenticated');
+      
+      // Перенаправляем на главную
+      router.push('/');
+    } catch (error) {
+      console.error('Ошибка при выходе:', error);
+    }
   };
 
   if (loading) {
@@ -87,6 +98,10 @@ export default function DashboardPage() {
             <div className={styles.detail}>
               <span className={styles.label}>ФИО:</span>
               <span className={styles.value}>{user.fullName}</span>
+            </div>
+            <div className={styles.detail}>
+              <span className={styles.label}>Роль:</span>
+              <span className={styles.value}>{user.roleName || 'Не указана'}</span>
             </div>
             <div className={styles.detail}>
               <span className={styles.label}>ID пользователя:</span>
