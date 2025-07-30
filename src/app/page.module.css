@@ -728,3 +728,404 @@
   display: flex;
   align-items: center;
 }
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+  .hero {
+    padding: 24px 16px;
+    margin-top: 80px;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  .heroSubtitle {
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+  }
+
+  .heroButtons {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .primaryBtn,
+  .secondaryBtn {
+    width: 100%;
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+
+  .section {
+    padding: 32px 16px;
+    margin-top: 32px;
+  }
+
+  .sectionTitle {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+  }
+
+  .directions {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .direction {
+    padding: 16px;
+    font-size: 0.95rem;
+  }
+
+  .featuresSection {
+    padding: 32px 16px;
+  }
+
+  .featuresHeader {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+  }
+
+  .featuresSubtext {
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+  }
+
+  .featuresGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .featureCard {
+    padding: 20px 16px;
+  }
+
+  .goalSection2 {
+    padding: 32px 16px;
+    margin-top: 32px;
+  }
+
+  .goalTitleRow2 {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .goalTitle2 {
+    font-size: 1.6rem;
+  }
+
+  .goalIcon2 {
+    font-size: 2.5rem;
+  }
+
+  .ctaSection {
+    padding: 32px 16px;
+  }
+
+  .ctaBox {
+    padding: 24px 16px;
+  }
+
+  .ctaTitle {
+    font-size: 1.4rem;
+  }
+
+  .ctaText {
+    font-size: 0.95rem;
+  }
+
+  .stepsModern {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .stepModern {
+    padding: 20px 16px;
+  }
+
+  .stepNumberModern {
+    font-size: 1.8rem;
+    width: 50px;
+    height: 50px;
+  }
+
+  .stepTitleModern {
+    font-size: 1.1rem;
+  }
+
+  .stepDescModern {
+    font-size: 0.9rem;
+  }
+
+  .footer {
+    padding: 32px 16px;
+  }
+
+  .footerContent {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .footerLinks {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .footerSocials {
+    justify-content: center;
+  }
+
+  /* Header адаптация */
+  .header {
+    padding: 12px 16px;
+    gap: 16px;
+  }
+
+  .headerLogo {
+    margin-left: 0;
+  }
+
+  .headerLogo img {
+    height: 32px;
+  }
+
+  .headerBrand {
+    font-size: 1.2rem;
+    margin-left: 8px;
+  }
+
+  .headerNav {
+    display: none; /* Скрываем навигацию на мобильных */
+  }
+
+  .headerActions {
+    margin-right: 0;
+    gap: 8px;
+  }
+
+  .headerBtn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+
+  .userGreeting {
+    display: none; /* Скрываем приветствие на мобильных */
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 20px 12px;
+    margin-top: 70px;
+  }
+
+  .heroTitle {
+    font-size: 1.8rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .section {
+    padding: 24px 12px;
+  }
+
+  .sectionTitle {
+    font-size: 1.6rem;
+  }
+
+  .featuresSection {
+    padding: 24px 12px;
+  }
+
+  .featuresHeader {
+    font-size: 1.6rem;
+  }
+
+  .goalSection2 {
+    padding: 24px 12px;
+  }
+
+  .goalTitle2 {
+    font-size: 1.4rem;
+  }
+
+  .ctaSection {
+    padding: 24px 12px;
+  }
+
+  .ctaBox {
+    padding: 20px 12px;
+  }
+
+  .ctaTitle {
+    font-size: 1.2rem;
+  }
+
+  .footer {
+    padding: 24px 12px;
+  }
+
+  .header {
+    padding: 10px 12px;
+  }
+
+  .headerLogo img {
+    height: 28px;
+  }
+
+  .headerBrand {
+    font-size: 1.1rem;
+  }
+
+  .headerBtn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Планшеты */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero {
+    max-width: 700px;
+    padding: 40px 24px;
+  }
+
+  .heroTitle {
+    font-size: 2.4rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.2rem;
+  }
+
+  .section {
+    max-width: 800px;
+    padding: 40px 24px;
+  }
+
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .directions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stepsModern {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .headerNav {
+    gap: 24px;
+  }
+
+  .headerNavLink {
+    font-size: 1rem;
+  }
+}
+
+/* Мобильное меню */
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 280px;
+  height: 100vh;
+  background: rgba(2, 8, 23, 0.98);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(78, 122, 255, 0.2);
+  z-index: 1000;
+  transition: left 0.3s ease;
+  display: none;
+}
+
+.mobileMenuOpen {
+  left: 0;
+}
+
+.mobileMenuHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 16px;
+  border-bottom: 1px solid rgba(78, 122, 255, 0.2);
+}
+
+.mobileMenuTitle {
+  color: #4e7aff;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.mobileMenuClose {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.mobileMenuClose:hover {
+  background: rgba(78, 122, 255, 0.1);
+}
+
+.mobileNav {
+  padding: 20px 0;
+}
+
+.mobileNavLink {
+  display: block;
+  padding: 16px 20px;
+  color: #b0b8d0;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.mobileNavLink:hover {
+  color: #4e7aff;
+  background: rgba(78, 122, 255, 0.05);
+  border-left-color: #4e7aff;
+}
+
+/* Показываем мобильное меню только на мобильных устройствах */
+@media (max-width: 768px) {
+  .mobileMenu {
+    display: block;
+  }
+}
+
+/* Кнопка мобильного меню */
+.mobileMenuBtn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.mobileMenuBtn:hover {
+  background: rgba(78, 122, 255, 0.1);
+}
+
+/* Показываем кнопку мобильного меню только на мобильных */
+@media (max-width: 768px) {
+  .mobileMenuBtn {
+    display: block;
+  }
+}

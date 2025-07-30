@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import styles from "../app/page.module.css";
+import { FaBars } from 'react-icons/fa';
 
 interface User {
   id: number;
@@ -72,6 +73,12 @@ export default function Header() {
     }
   };
 
+  const toggleMobileMenu = () => {
+    // Отправляем событие для открытия мобильного меню
+    const event = new CustomEvent('toggleMobileMenu');
+    window.dispatchEvent(event);
+  };
+
   return (
     <header className={styles.header}>
       <Link href="/" className={styles.headerLogo} prefetch={false}>
@@ -92,6 +99,11 @@ export default function Header() {
         ))}
       </nav>
       <div className={styles.headerActions}>
+        {/* Кнопка мобильного меню */}
+        <button onClick={toggleMobileMenu} className={styles.mobileMenuBtn}>
+          <FaBars />
+        </button>
+        
         {isAuthenticated ? (
           <>
             <span className={styles.userGreeting}>
