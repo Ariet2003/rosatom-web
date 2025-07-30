@@ -44,7 +44,9 @@ export default function Header() {
       </nav>
       <div className={styles.headerActions}>
         <button className={styles.headerBtn}>Войти</button>
-        <button className={styles.headerBtn + ' ' + styles.headerBtnPrimary}>Регистрация</button>
+        <Link href="/auth/signup">
+          <button className={styles.headerBtn + ' ' + styles.headerBtnPrimary}>Регистрация</button>
+        </Link>
       </div>
     </header>
   );
