@@ -48,6 +48,7 @@ export async function POST(request: NextRequest) {
       fullName: user.fullName,
       roleId: user.roleId,
       roleName: user.role.name,
+      profileImageUrl: user.profileImageUrl,
       createdAt: user.createdAt,
     };
 

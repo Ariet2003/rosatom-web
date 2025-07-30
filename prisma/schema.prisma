@@ -1,4 +1,5 @@
-// Prisma schema for StartAtom
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -10,18 +11,112 @@ datasource db {
 }
 
 model Role {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
   users User[]
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  fullName  String
-  email     String   @unique
-  password  String
-  role      Role     @relation(fields: [roleId], references: [id])
-  roleId    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              Int      @id @default(autoincrement())
+  fullName        String
+  email           String   @unique
+  password        String
+  profileImageUrl String?  // URL фото профиля (опциональное поле)
+  role            Role     @relation(fields: [roleId], references: [id])
+  roleId          Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Связи с тестами
+  createdTests    Test[]           @relation("TestCreator")
+  testSessions    TestSession[]    @relation("TestSessionUser")
+}
+
+// 🧩 1. Test — тест
+model Test {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  createdBy   User     @relation("TestCreator", fields: [createdById], references: [id])
+  createdById Int
+  createdAt   DateTime @default(now())
+  
+  // Связи
+  questions     Question[]     @relation("TestQuestions")
+  testSessions  TestSession[]  @relation("TestSessions")
+}
+
+// ❓ 2. Question — вопрос
+model Question {
+  id        Int           @id @default(autoincrement())
+  test      Test          @relation("TestQuestions", fields: [testId], references: [id], onDelete: Cascade)
+  testId    Int
+  text      String
+  type      QuestionType
+  score     Int
+  createdAt DateTime      @default(now())
+  
+  // Связи
+  options   Option[]      @relation("QuestionOptions")
+  answers   Answer[]      @relation("QuestionAnswers")
+}
+
+// 🔘 3. Option — вариант ответа
+model Option {
+  id         Int      @id @default(autoincrement())
+  question   Question @relation("QuestionOptions", fields: [questionId], references: [id], onDelete: Cascade)
+  questionId Int
+  text       String
+  isCorrect  Boolean
+  
+  // Связи
+  answers    Answer[] @relation("SelectedOption")
+}
+
+// 📜 4. TestSession — попытка прохождения теста
+model TestSession {
+  id         Int       @id @default(autoincrement())
+  user       User      @relation("TestSessionUser", fields: [userId], references: [id])
+  userId     Int
+  test       Test      @relation("TestSessions", fields: [testId], references: [id])
+  testId     Int
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+  totalScore Int       @default(0)
+  
+  // Связи
+  answers    Answer[]  @relation("TestSessionAnswers")
+}
+
+// ✅ 5. Answer — ответ на вопрос
+model Answer {
+  id               Int         @id @default(autoincrement())
+  testSession      TestSession @relation("TestSessionAnswers", fields: [testSessionId], references: [id], onDelete: Cascade)
+  testSessionId    Int
+  question         Question    @relation("QuestionAnswers", fields: [questionId], references: [id])
+  questionId       Int
+  selectedOption   Option?     @relation("SelectedOption", fields: [selectedOptionId], references: [id])
+  selectedOptionId Int?
+  openAnswer       String?
+  aiScore          Int?
+  reviewed         Boolean     @default(false)
+  
+  // Связи
+  aiFeedback       AiFeedback? @relation("AnswerAiFeedback")
+}
+
+// 🧠 6. AiFeedback — результат от ИИ
+model AiFeedback {
+  id          Int      @id @default(autoincrement())
+  answer      Answer   @relation("AnswerAiFeedback", fields: [answerId], references: [id], onDelete: Cascade)
+  answerId    Int      @unique
+  feedback    String
+  score       Int
+  evaluatedAt DateTime @default(now())
+}
+
+// Enum для типа вопроса
+enum QuestionType {
+  MULTIPLE_CHOICE
+  OPEN
 }
