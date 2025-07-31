@@ -14,9 +14,22 @@ export default [
   js.configs.recommended,
   ...compat.extends('next/core-web-vitals'),
   {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: await import('@typescript-eslint/parser'),
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    plugins: {
+      '@typescript-eslint': await import('@typescript-eslint/eslint-plugin'),
+    },
     rules: {
-      '@typescript-eslint/no-unused-vars': 'warn',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      'no-unused-vars': 'warn',
       'react-hooks/exhaustive-deps': 'warn',
       '@next/next/no-img-element': 'warn'
     },

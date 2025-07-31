@@ -6,7 +6,7 @@ import { getServerAdminAuth } from '@/lib/jwt';
 export async function GET(request: NextRequest) {
   try {
     // Проверяем аутентификацию админа
-    const auth = await getServerAdminAuth(request);
+    const auth = await getServerAdminAuth();
     if (!auth) {
       return NextResponse.json(
         { error: 'Unauthorized' },

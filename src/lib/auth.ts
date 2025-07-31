@@ -10,9 +10,9 @@ export interface User {
 }
 
 // Функция для установки куки аутентификации
-export function setAuthCookies(user: User) {
+export async function setAuthCookies(user: User) {
   // Устанавливаем куки на стороне сервера
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   cookieStore.set('auth_token', JSON.stringify(user), {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -48,7 +48,7 @@ export function getAuthCookies(): { isAuthenticated: boolean; user: User | null 
 }
 
 // Функция для очистки данных аутентификации
-export function clearAuthCookies() {
+export async function clearAuthCookies() {
   // Очищаем localStorage
   if (typeof window !== 'undefined') {
     localStorage.removeItem('user');
@@ -56,14 +56,14 @@ export function clearAuthCookies() {
   }
 
   // Очищаем куки на стороне сервера
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   cookieStore.delete('auth_token');
 }
 
 // Функция для проверки аутентификации на сервере
 export async function getServerAuth(): Promise<{ isAuthenticated: boolean; user: User | null }> {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const authToken = cookieStore.get('auth_token');
     
     if (authToken) {

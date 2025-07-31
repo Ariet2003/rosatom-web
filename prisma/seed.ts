@@ -235,6 +235,17 @@ const tests = [
 ];
 
 async function main() {
+  // Создаем роль администратора
+  const adminRole = await prisma.role.upsert({
+    where: { name: 'admin' },
+    update: {},
+    create: {
+      name: 'admin'
+    }
+  });
+
+  console.log('✅ Created admin role');
+
   // Создаем настройки администратора
   const adminPassword = await bcrypt.hash('admin123', 12);
   const adminCredentials = {

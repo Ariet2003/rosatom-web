@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './users.module.css';
@@ -19,22 +19,23 @@ interface Pagination {
   currentPage: number;
   totalPages: number;
   totalCount: number;
+  limit: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
-  limit: number;
 }
 
-export default function UsersPage() {
+export default function AdminUsersPage() {
   const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
-  const [pagination, setPagination] = useState<Pagination | null>(null);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [pagination, setPagination] = useState<Pagination | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchTimeout, setSearchTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
   const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [editingUser, setEditingUser] = useState<{ id: number; fullName: string } | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<{ userId: number; userName: string } | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const showNotification = (type: 'success' | 'error', message: string) => {
     setNotification({ type, message });
@@ -83,7 +84,7 @@ export default function UsersPage() {
     }
 
     const timeout = setTimeout(() => {
-      fetchUsers(1, search);
+      fetchUsers(1, searchQuery);
     }, 500);
 
     setSearchTimeout(timeout);
@@ -93,10 +94,10 @@ export default function UsersPage() {
         clearTimeout(timeout);
       }
     };
-  }, [search]);
+  }, [searchQuery]);
 
   const handlePageChange = (page: number) => {
-    fetchUsers(page, search);
+    fetchUsers(page, searchQuery);
   };
 
   const handleLogout = async () => {
@@ -142,7 +143,7 @@ export default function UsersPage() {
 
       showNotification('success', 'Пользователь успешно обновлен');
       setEditingUser(null);
-      fetchUsers(pagination?.currentPage || 1, search);
+      fetchUsers(pagination?.currentPage || 1, searchQuery);
     } catch (error) {
       console.error('Error updating user:', error);
       showNotification('error', 'Ошибка при обновлении пользователя');
@@ -175,7 +176,7 @@ export default function UsersPage() {
 
       showNotification('success', 'Пользователь успешно удален');
       setDeleteConfirm(null);
-      fetchUsers(pagination?.currentPage || 1, search);
+      fetchUsers(pagination?.currentPage || 1, searchQuery);
     } catch (error) {
       console.error('Error deleting user:', error);
       showNotification('error', 'Ошибка при удалении пользователя');
@@ -298,8 +299,8 @@ export default function UsersPage() {
             <input
               type="text"
               placeholder="Поиск по имени или email..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchInput}
             />
           </div>

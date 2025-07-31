@@ -9,7 +9,7 @@ export async function GET(
 ) {
   try {
     // Проверяем аутентификацию админа
-    const auth = await getServerAdminAuth(request);
+    const auth = await getServerAdminAuth();
     if (!auth) {
       return NextResponse.json(
         { error: 'Unauthorized' },
