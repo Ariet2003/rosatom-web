@@ -253,6 +253,20 @@ async function main() {
 
   console.log('✅ Created admin login settings');
 
+  // Создаем пользователя-админа
+  const adminUser = await prisma.user.upsert({
+    where: { email: 'amanbekovariet405@gmail.com' },
+    update: {},
+    create: {
+      email: 'amanbekovariet405@gmail.com',
+      fullName: 'Администратор',
+      password: adminPassword, // Используем тот же хеш пароля
+      roleId: adminRole.id
+    }
+  });
+
+  console.log('✅ Created admin user');
+
   for (const test of tests) {
     const createdTest = await prisma.test.create({
       data: {

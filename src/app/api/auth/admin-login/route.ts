@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
+import { createAdminToken } from '@/lib/jwt';
 
 export async function POST(request: NextRequest) {
   try {
@@ -56,27 +57,47 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Получаем пользователя-админа из базы данных
+    const adminUser = await prisma.user.findUnique({
+      where: { email: adminCredentials.login },
+      include: { role: true }
+    });
+
+    if (!adminUser) {
+      return NextResponse.json(
+        { message: 'Пользователь-администратор не найден' },
+        { status: 404 }
+      );
+    }
+
     // Создаем объект пользователя для админа
-    const adminUser = {
-      id: 0, // Специальный ID для админа
-      email: adminCredentials.login,
-      fullName: 'Администратор',
-      roleId: 0,
-      roleName: 'admin',
-      createdAt: new Date().toISOString()
+    const adminUserData = {
+      id: adminUser.id,
+      email: adminUser.email,
+      fullName: adminUser.fullName,
+      roleId: adminUser.roleId,
+      roleName: adminUser.role.name,
+      createdAt: adminUser.createdAt.toISOString()
     };
 
     // Устанавливаем cookie для аутентификации
     const response = NextResponse.json({
       message: 'Успешный вход',
-      user: adminUser
+      user: adminUserData
     });
 
-    // Устанавливаем httpOnly cookie
-    response.cookies.set('auth-token', 'admin-authenticated', {
+    // Устанавливаем httpOnly cookie с JWT токеном
+    const token = createAdminToken({
+      id: adminUser.id,
+      email: adminUser.email,
+      fullName: adminUser.fullName,
+      roleName: adminUser.role.name
+    });
+    
+    response.cookies.set('auth_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 7 // 7 дней
     });
 

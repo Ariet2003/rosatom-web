@@ -95,24 +95,53 @@ export async function POST(request: NextRequest) {
       where: { key: 'admin_verification_code' }
     });
 
-    // Создаем объект пользователя для админа
-    const adminUser = {
-      id: 0, // Специальный ID для админа
-      email: email,
-      fullName: 'Администратор',
-      roleName: 'admin'
-    };
+    // Находим или создаем пользователя-админа
+    let adminUser = await prisma.user.findFirst({
+      where: { email: email }
+    });
+
+    if (!adminUser) {
+      // Находим роль админа
+      const adminRole = await prisma.role.findUnique({
+        where: { name: 'admin' }
+      });
+
+      if (!adminRole) {
+        return NextResponse.json(
+          { message: 'Ошибка: роль администратора не найдена' },
+          { status: 500 }
+        );
+      }
+
+      // Создаем нового пользователя-админа
+      adminUser = await prisma.user.create({
+        data: {
+          email: email,
+          fullName: 'Администратор',
+          password: '', // Пустой пароль для админа
+          roleId: adminRole.id
+        }
+      });
+    }
 
     // Создаем JWT токен
-    const token = createAdminToken(adminUser);
+    const token = createAdminToken({
+      id: adminUser.id,
+      email: adminUser.email,
+      fullName: adminUser.fullName,
+      roleName: 'admin'
+    });
 
     // Устанавливаем cookie для аутентификации
     const response = NextResponse.json({
       message: 'Успешная аутентификация',
       user: {
-        ...adminUser,
+        id: adminUser.id,
+        email: adminUser.email,
+        fullName: adminUser.fullName,
+        roleName: 'admin',
         isAdmin: true,
-        createdAt: new Date().toISOString()
+        createdAt: adminUser.createdAt.toISOString()
       }
     });
 

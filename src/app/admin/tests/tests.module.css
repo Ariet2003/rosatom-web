@@ -1,0 +1,1218 @@
+.container {
+  min-height: 100vh;
+  background: #020817;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.loadingContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #020817;
+  color: #fff;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #4e7aff;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.header {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.backBtn {
+  color: #b0b8d0;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.backBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+ .headerContent h1 {
+   color: #fff;
+   font-size: 1.5rem;
+   font-weight: 700;
+   margin: 0;
+ }
+
+ .userInfo {
+   display: flex;
+   align-items: center;
+   gap: 1rem;
+   color: #b0b8d0;
+ }
+
+ .userName {
+   display: block;
+ }
+
+ .logoutBtn {
+   background: rgba(255, 107, 107, 0.2);
+   color: #ff6b6b;
+   border: 1px solid rgba(255, 107, 107, 0.3);
+   padding: 0.5rem 1rem;
+   border-radius: 8px;
+   cursor: pointer;
+   transition: all 0.3s ease;
+   font-size: 0.9rem;
+ }
+
+ .logoutBtn:hover {
+   background: rgba(255, 107, 107, 0.3);
+   transform: translateY(-1px);
+ }
+
+ .burgerMenu {
+   display: none;
+   flex-direction: column;
+   justify-content: space-around;
+   width: 30px;
+   height: 25px;
+   background: transparent;
+   border: none;
+   cursor: pointer;
+   padding: 0;
+   z-index: 10;
+ }
+
+ .burgerMenu span {
+   width: 100%;
+   height: 3px;
+   background: #fff;
+   border-radius: 10px;
+   transition: all 0.3s linear;
+   position: relative;
+   transform-origin: 1px;
+ }
+
+ .burgerMenu:hover span {
+   background: #4e7aff;
+ }
+
+.createBtn {
+  background: linear-gradient(135deg, #4e7aff 0%, #5C75BF 100%);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.createBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(78, 122, 255, 0.3);
+}
+
+ .main {
+   display: flex;
+   min-height: calc(100vh - 80px); /* Вычитаем высоту header */
+ }
+
+ .sidebar {
+   width: 250px;
+   background: rgba(255, 255, 255, 0.05);
+   backdrop-filter: blur(20px);
+   border-right: 1px solid rgba(255, 255, 255, 0.1);
+   padding: 1.5rem;
+   position: fixed;
+   left: 0;
+   top: 80px; /* Высота header */
+   height: calc(100vh - 80px);
+   overflow-y: auto;
+   z-index: 1000;
+   transition: transform 0.3s ease-in-out;
+ }
+
+ .sidebarOverlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background: rgba(0, 0, 0, 0.5);
+   z-index: 999;
+   display: none;
+ }
+
+ .sidebarHeader {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 1.5rem;
+   padding-bottom: 1rem;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+ }
+
+ .closeSidebar {
+   display: none;
+   background: transparent;
+   border: none;
+   color: #b0b8d0;
+   cursor: pointer;
+   padding: 0.5rem;
+   border-radius: 4px;
+   transition: all 0.3s ease;
+ }
+
+ .closeSidebar:hover {
+   background: rgba(255, 255, 255, 0.1);
+   color: #fff;
+ }
+
+ .closeSidebar svg {
+   width: 20px;
+   height: 20px;
+ }
+
+ .sidebarHeader h3 {
+   color: #fff;
+   font-size: 1.1rem;
+   font-weight: 600;
+   margin: 0;
+ }
+
+ .nav ul {
+   list-style: none;
+   padding: 0;
+   margin: 0;
+ }
+
+ .nav li {
+   margin-bottom: 0.5rem;
+ }
+
+ .navLink {
+   display: flex;
+   align-items: center;
+   gap: 0.75rem;
+   padding: 0.75rem 1rem;
+   color: #b0b8d0;
+   text-decoration: none;
+   border-radius: 8px;
+   transition: all 0.3s ease;
+   font-weight: 500;
+ }
+
+ .navIcon {
+   width: 18px;
+   height: 18px;
+   flex-shrink: 0;
+   transition: all 0.3s ease;
+ }
+
+ .navLink:hover {
+   background: rgba(78, 122, 255, 0.1);
+   color: #4e7aff;
+   transform: translateX(4px);
+ }
+
+ .navLink:hover .navIcon {
+   stroke: #4e7aff;
+ }
+
+ .content {
+   flex: 1;
+   margin-left: 250px; /* Отступ для sidebar */
+   padding: 2rem;
+   display: flex;
+   flex-direction: column;
+   gap: 2rem;
+   transition: margin-left 0.3s ease-in-out;
+ }
+
+ .contentHeader {
+   display: flex;
+   justify-content: flex-end;
+   margin-bottom: 1rem;
+ }
+
+/* Список тестов */
+.testsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.testsList h2 {
+  color: #fff;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #b0b8d0;
+}
+
+.emptyState p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.testsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.testCard {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.testCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.testInfo {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.testInfo:hover {
+  transform: translateY(-2px);
+}
+
+.testInfo h3 {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.testInfo p {
+  color: #b0b8d0;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.testMeta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  color: #b0b8d0;
+}
+
+.testActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.editBtn, .deleteBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+}
+
+.editBtn {
+  background: rgba(78, 122, 255, 0.2);
+  color: #4e7aff;
+  border: 1px solid rgba(78, 122, 255, 0.3);
+}
+
+.editBtn:hover {
+  background: rgba(78, 122, 255, 0.3);
+}
+
+.deleteBtn {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.deleteBtn:hover {
+  background: rgba(255, 107, 107, 0.3);
+}
+
+/* Форма создания теста */
+.createForm {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.formHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.formHeader h2 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.cancelBtn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #b0b8d0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancelBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.testForm {
+  margin-bottom: 2rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.input, .textarea, .select {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23b0b8d0' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.select option {
+  background: #1a1a2e;
+  color: #fff;
+  padding: 0.5rem;
+}
+
+.input:focus, .textarea:focus, .select:focus {
+  outline: none;
+  border-color: #4e7aff;
+  box-shadow: 0 0 0 2px rgba(78, 122, 255, 0.2);
+}
+
+.input::placeholder, .textarea::placeholder {
+  color: #b0b8d0;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Секция вопросов */
+.questionsSection {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 2rem;
+}
+
+.questionsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.questionsHeader h3 {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.addQuestionBtn {
+  background: rgba(78, 122, 255, 0.2);
+  color: #4e7aff;
+  border: 1px solid rgba(78, 122, 255, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.addQuestionBtn:hover {
+  background: rgba(78, 122, 255, 0.3);
+}
+
+.questionCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.questionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.questionHeader h4 {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.removeQuestionBtn {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.removeQuestionBtn:hover {
+  background: rgba(255, 107, 107, 0.3);
+}
+
+.questionSettings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.optionsSection {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 1rem;
+}
+
+.optionsSection label {
+  display: block;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.radio {
+  width: 18px;
+  height: 18px;
+  accent-color: #4e7aff;
+}
+
+.optionInput {
+  flex: 1;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.optionInput:focus {
+  outline: none;
+  border-color: #4e7aff;
+}
+
+.formActions {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.submitBtn {
+  background: linear-gradient(135deg, #4e7aff 0%, #5C75BF 100%);
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.submitBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(78, 122, 255, 0.3);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submitBtn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.addQuestionSection {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.addQuestionSection .addQuestionBtn {
+  background: rgba(78, 122, 255, 0.2);
+  color: #4e7aff;
+  border: 1px solid rgba(78, 122, 255, 0.3);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.addQuestionSection .addQuestionBtn:hover {
+  background: rgba(78, 122, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(78, 122, 255, 0.2);
+}
+
+/* Стили для страницы просмотра теста */
+.testViewHeader {
+  margin-bottom: 2rem;
+}
+
+.testView {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.testView .testInfo h2 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.testDescription {
+  color: #b0b8d0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.questionsList {
+  margin-top: 2rem;
+}
+
+.questionsList h3 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.questionViewCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.questionViewCard .questionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.questionViewCard .questionHeader h4 {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.questionType {
+  background: rgba(78, 122, 255, 0.2);
+  color: #4e7aff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.questionScore {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.questionText {
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.optionsList {
+  margin-top: 1rem;
+}
+
+.optionItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.optionItem.correctOption {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.optionNumber {
+  color: #b0b8d0;
+  font-weight: 600;
+  min-width: 20px;
+}
+
+.optionText {
+  color: #fff;
+  flex: 1;
+}
+
+.correctBadge {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+ /* Мобильная адаптивность */
+ @media (max-width: 768px) {
+   /* Бургер меню */
+   .burgerMenu {
+     display: flex;
+   }
+   
+   /* Скрываем имя пользователя на мобильных */
+   .userName {
+     display: none;
+   }
+   
+   /* Заголовок */
+   .headerContent h1 {
+     font-size: 1.2rem;
+   }
+   
+   /* Боковая панель */
+   .sidebar {
+     transform: translateX(-100%);
+     width: 280px;
+     top: 0;
+     height: 100vh;
+     padding: 1rem;
+   }
+   
+   .sidebarOpen {
+     transform: translateX(0);
+   }
+   
+   .sidebarOverlay {
+     display: block;
+   }
+   
+   .closeSidebar {
+     display: block;
+   }
+   
+   /* Контент */
+   .content {
+     margin-left: 0;
+     padding: 1rem;
+   }
+   
+   .contentShifted {
+     margin-left: 0;
+   }
+   
+   /* Список тестов */
+   .testsHeader {
+     flex-direction: column;
+     align-items: flex-start;
+     gap: 1rem;
+   }
+   
+   .testsHeader h2 {
+     font-size: 1.5rem;
+   }
+   
+   .testsGrid {
+     grid-template-columns: 1fr;
+     gap: 1rem;
+   }
+   
+   .testCard {
+     padding: 1rem;
+   }
+   
+   .testActions {
+     flex-direction: row;
+     gap: 0.5rem;
+   }
+   
+   .editBtn, .deleteBtn {
+     flex: 1;
+     justify-content: center;
+   }
+   
+   .questionSettings {
+     grid-template-columns: 1fr;
+   }
+   
+   .formHeader {
+     flex-direction: column;
+     gap: 1rem;
+     align-items: flex-start;
+   }
+   
+   .questionsHeader {
+     flex-direction: column;
+     gap: 1rem;
+     align-items: flex-start;
+   }
+   
+   .createForm {
+     padding: 1rem;
+   }
+   
+   .questionCard {
+     padding: 1rem;
+   }
+   
+   .optionRow {
+     flex-direction: column;
+     align-items: flex-start;
+     gap: 0.5rem;
+   }
+   
+   .optionInput {
+     width: 100%;
+   }
+   
+   /* Адаптивность для страницы просмотра теста */
+   .testView {
+     padding: 1rem;
+   }
+   
+   .testView .testInfo h2 {
+     font-size: 1.5rem;
+   }
+   
+   .questionViewCard {
+     padding: 1rem;
+   }
+   
+   .questionViewCard .questionHeader {
+     flex-direction: column;
+     align-items: flex-start;
+     gap: 0.5rem;
+   }
+   
+   .optionItem {
+     flex-direction: column;
+     align-items: flex-start;
+     gap: 0.5rem;
+   }
+   
+   .correctBadge {
+     align-self: flex-start;
+   }
+ }
+
+ @media (max-width: 480px) {
+   .headerContent {
+     padding: 0 0.75rem;
+   }
+   
+   .content {
+     padding: 0.75rem;
+   }
+   
+   .testsHeader h2 {
+     font-size: 1.3rem;
+   }
+   
+   .testCard {
+     padding: 0.75rem;
+   }
+   
+   .testInfo h3 {
+     font-size: 1.1rem;
+   }
+   
+   .testMeta {
+     flex-direction: column;
+     gap: 0.5rem;
+   }
+   
+   .createForm {
+     padding: 0.75rem;
+   }
+   
+   .questionCard {
+     padding: 0.75rem;
+   }
+   
+   .formGroup label {
+     font-size: 0.85rem;
+   }
+   
+   .input, .textarea, .select {
+     padding: 0.6rem;
+     font-size: 0.85rem;
+   }
+ } 
+
+/* Уведомления */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+  max-width: 400px;
+  width: 100%;
+  border-radius: 12px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: slideInRight 0.3s ease-out;
+  border: 1px solid;
+}
+
+.notification.success {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.notification.error {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.notificationContent {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+}
+
+.notificationIcon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.notificationMessage {
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.notificationClose {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notificationClose:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Анимация появления уведомления */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Модальное окно подтверждения */
+.confirmModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.confirmModal {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  animation: slideInUp 0.3s ease-out;
+}
+
+.confirmModalHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.confirmModalIcon {
+  width: 24px;
+  height: 24px;
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.confirmModalTitle {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.confirmModalMessage {
+  color: #d1d5db;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.confirmModalActions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.confirmModalBtn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 80px;
+}
+
+.confirmModalBtn.cancel {
+  background: #374151;
+  color: #d1d5db;
+}
+
+.confirmModalBtn.cancel:hover {
+  background: #4b5563;
+}
+
+.confirmModalBtn.confirm {
+  background: #ef4444;
+  color: #fff;
+}
+
+.confirmModalBtn.confirm:hover {
+  background: #dc2626;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Адаптивность уведомлений и модальных окон */
+@media (max-width: 768px) {
+  .notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+  
+  .notificationContent {
+    padding: 0.75rem 1rem;
+  }
+  
+  .notificationMessage {
+    font-size: 0.85rem;
+  }
+  
+  .notificationClose {
+    top: 0.25rem;
+    right: 0.25rem;
+  }
+
+  .confirmModal {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .confirmModalActions {
+    flex-direction: column;
+  }
+
+  .confirmModalBtn {
+    width: 100%;
+  }
+} 
