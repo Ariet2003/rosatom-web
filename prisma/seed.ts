@@ -1,4 +1,5 @@
 import { PrismaClient, QuestionType } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -234,6 +235,24 @@ const tests = [
 ];
 
 async function main() {
+  // Создаем настройки администратора
+  const adminPassword = await bcrypt.hash('admin123', 12);
+  const adminCredentials = {
+    login: 'amanbekovariet405@gmail.com',
+    password: adminPassword
+  };
+
+  await prisma.settings.upsert({
+    where: { key: 'admin_login' },
+    update: { value: JSON.stringify(adminCredentials) },
+    create: {
+      key: 'admin_login',
+      value: JSON.stringify(adminCredentials)
+    }
+  });
+
+  console.log('✅ Created admin login settings');
+
   for (const test of tests) {
     const createdTest = await prisma.test.create({
       data: {

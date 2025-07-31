@@ -1,0 +1,625 @@
+.container {
+  min-height: 100vh;
+  background: #020817;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.loadingContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #020817;
+  color: #fff;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #4e7aff;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.header {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.burgerMenu {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 25px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.burgerMenu span {
+  width: 100%;
+  height: 3px;
+  background: #fff;
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+.burgerMenu:hover span {
+  background: #4e7aff;
+}
+
+.headerContent h1 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #b0b8d0;
+}
+
+.userName {
+  display: block;
+}
+
+.logoutBtn {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.logoutBtn:hover {
+  background: rgba(255, 107, 107, 0.3);
+  transform: translateY(-1px);
+}
+
+.main {
+  display: flex;
+  min-height: calc(100vh - 80px); /* Вычитаем высоту header */
+}
+
+.sidebar {
+  width: 250px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  position: fixed;
+  left: 0;
+  top: 80px; /* Высота header */
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+}
+
+.sidebarOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+.sidebarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.closeSidebar {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #b0b8d0;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.closeSidebar:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.closeSidebar svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sidebarHeader h3 {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav li {
+  margin-bottom: 0.5rem;
+}
+
+.navLink {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #b0b8d0;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #b0b8d0;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.navIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.navLink:hover {
+  background: rgba(78, 122, 255, 0.1);
+  color: #4e7aff;
+  transform: translateX(4px);
+}
+
+.navLink:hover .navIcon {
+  stroke: #4e7aff;
+}
+
+.content {
+  flex: 1;
+  margin-left: 250px; /* Отступ для sidebar */
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.welcomeSection {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.welcomeSection h2 {
+  color: #fff;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.welcomeSection p {
+  color: #b0b8d0;
+  font-size: 1.1rem;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.statCard {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.statCard h3 {
+  color: #b0b8d0;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.statNumber {
+  color: #4e7aff;
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0.5rem 0;
+}
+
+.statCard p:last-child {
+  color: #b0b8d0;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.quickActions {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.quickActions h3 {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.actionBtn {
+  background: linear-gradient(135deg, #4e7aff 0%, #5C75BF 100%);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.actionBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(78, 122, 255, 0.3);
+}
+
+/* Стили для диаграммы */
+.chartSection {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chartSection h3 {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.chartContainer {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Стили для таблицы результатов */
+.recentResults {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.recentResults h3 {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.resultsTable {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(78, 122, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+  color: #fff;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #b0b8d0;
+  transition: background-color 0.3s ease;
+}
+
+.tableRow:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.score {
+  color: #4e7aff;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  /* Бургер меню */
+  .burgerMenu {
+    display: flex;
+  }
+  
+  /* Скрываем имя пользователя на мобильных */
+  .userName {
+    display: none;
+  }
+  
+  /* Заголовок */
+  .headerContent h1 {
+    font-size: 1.2rem;
+  }
+  
+  /* Боковая панель */
+  .sidebar {
+    transform: translateX(-100%);
+    width: 280px;
+    top: 0;
+    height: 100vh;
+    padding: 1rem;
+  }
+  
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+  
+  .sidebarOverlay {
+    display: block;
+  }
+  
+  .closeSidebar {
+    display: block;
+  }
+  
+  /* Контент */
+  .content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+  
+  .contentShifted {
+    margin-left: 0;
+  }
+  
+  /* Статистика */
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .statCard {
+    padding: 1rem;
+  }
+  
+  .statNumber {
+    font-size: 1.5rem;
+  }
+  
+  /* Быстрые действия */
+  .actionButtons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .actionBtn {
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  /* Диаграмма */
+  .chartSection {
+    padding: 1rem;
+  }
+  
+  .chartContainer {
+    padding: 0.5rem;
+  }
+  
+  /* Таблица результатов */
+  .recentResults {
+    padding: 1rem;
+  }
+  
+  /* Мобильная таблица результатов */
+  .resultsTable {
+    background: transparent;
+    border: none;
+  }
+  
+  .tableHeader {
+    display: none; /* Скрываем заголовок на мобильных */
+  }
+  
+  .tableRow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .tableRow:last-child {
+    margin-bottom: 0;
+  }
+  
+  .tableRow span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+  }
+  
+  .tableRow span::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #4e7aff;
+    font-size: 0.9rem;
+    min-width: 80px;
+  }
+  
+  .tableRow span:not([data-label])::before {
+    content: none;
+  }
+  
+  .tableRow .score {
+    color: #4e7aff;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  
+  /* Приветственная секция */
+  .welcomeSection {
+    padding: 1.5rem;
+  }
+  
+  .welcomeSection h2 {
+    font-size: 1.5rem;
+  }
+  
+  .welcomeSection p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerContent {
+    padding: 0 1rem;
+  }
+  
+  .content {
+    padding: 0.75rem;
+  }
+  
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .statCard {
+    padding: 1rem;
+  }
+  
+  .welcomeSection {
+    padding: 1rem;
+  }
+  
+  .welcomeSection h2 {
+    font-size: 1.3rem;
+  }
+  
+  .chartSection,
+  .recentResults,
+  .quickActions {
+    padding: 1rem;
+  }
+  
+  /* Дополнительные улучшения для очень маленьких экранов */
+  .tableRow {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .tableRow span {
+    font-size: 0.9rem;
+  }
+  
+  .tableRow span::before {
+    font-size: 0.8rem;
+    min-width: 70px;
+  }
+  
+  .tableRow .score {
+    font-size: 1rem;
+  }
+} 

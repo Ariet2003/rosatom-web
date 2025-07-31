@@ -120,3 +120,10 @@ enum QuestionType {
   MULTIPLE_CHOICE
   OPEN
 }
+
+// ⚙️ Settings — настройки приложения
+model Settings {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  value String
+}
