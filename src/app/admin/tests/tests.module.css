@@ -254,8 +254,17 @@
  }
 
  .navLink:hover .navIcon {
-   stroke: #4e7aff;
- }
+  stroke: #4e7aff;
+}
+
+.navLink.active {
+  background: rgba(78, 122, 255, 0.2);
+  color: #4e7aff;
+}
+
+.navLink.active .navIcon {
+  stroke: #4e7aff;
+}
 
  .content {
    flex: 1;
