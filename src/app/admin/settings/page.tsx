@@ -28,28 +28,35 @@ export default function AdminSettingsPage() {
   const [saving, setSaving] = useState(false);
   const [newSetting, setNewSetting] = useState({ key: '', value: '' });
   const [message, setMessage] = useState('');
+  const [editingSetting, setEditingSetting] = useState<number | null>(null);
+  const [editValue, setEditValue] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     // Проверяем аутентификацию и права администратора
-    const isAuthenticated = localStorage.getItem('isAuthenticated');
-    const isAdmin = localStorage.getItem('isAdmin');
-    const userData = localStorage.getItem('user');
+    const checkAdminAuthAndLoadData = async () => {
+      try {
+        const authResponse = await fetch('/api/auth/check-admin', {
+          method: 'GET',
+          credentials: 'include'
+        });
 
-    if (!isAuthenticated || !isAdmin || !userData) {
-      router.push('/admin/login');
-      return;
-    }
+        if (authResponse.ok) {
+          const authData = await authResponse.json();
+          setUser(authData.user);
+          loadSettings();
+        } else {
+          router.push('/admin/login');
+        }
+      } catch (error) {
+        console.error('Ошибка проверки аутентификации:', error);
+        router.push('/admin/login');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    try {
-      const userObj: User = JSON.parse(userData);
-      setUser(userObj);
-      loadSettings();
-    } catch (error) {
-      console.error('Ошибка парсинга данных пользователя:', error);
-      router.push('/admin/login');
-    } finally {
-      setLoading(false);
-    }
+    checkAdminAuthAndLoadData();
   }, [router]);
 
   const loadSettings = async () => {
@@ -81,6 +88,7 @@ export default function AdminSettingsPage() {
       if (response.ok) {
         setMessage('Настройка успешно обновлена');
         setTimeout(() => setMessage(''), 3000);
+        setEditingSetting(null);
       } else {
         setMessage('Ошибка при обновлении настройки');
       }
@@ -145,11 +153,64 @@ export default function AdminSettingsPage() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('isAdmin');
-    router.push('/admin/login');
+  const handleEditSetting = (setting: Setting) => {
+    setEditingSetting(setting.id);
+    setEditValue(setting.value);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingSetting(null);
+    setEditValue('');
+  };
+
+  const handleUpdateSetting = async (setting: Setting) => {
+    setSaving(true);
+    try {
+      const response = await fetch('/api/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          key: setting.key,
+          value: editValue
+        }),
+      });
+
+      if (response.ok) {
+        setMessage('Настройка успешно обновлена');
+        setTimeout(() => setMessage(''), 3000);
+        setEditingSetting(null);
+        loadSettings();
+      } else {
+        setMessage('Ошибка при обновлении настройки');
+      }
+    } catch (error) {
+      setMessage('Ошибка сети');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/admin-logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error('Ошибка выхода:', error);
+    } finally {
+      router.push('/admin/login');
+    }
+  };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setSidebarOpen(false);
   };
 
   if (loading) {
@@ -169,9 +230,20 @@ export default function AdminSettingsPage() {
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1>Настройки системы</h1>
+          <div className={styles.headerLeft}>
+            <button 
+              className={styles.burgerMenu} 
+              onClick={toggleSidebar}
+              aria-label="Открыть меню"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+            <h1>Настройки системы</h1>
+          </div>
           <div className={styles.userInfo}>
-            <span>Администратор: {user.fullName}</span>
+            <span className={styles.userName}>Администратор: {user.fullName}</span>
             <button onClick={handleLogout} className={styles.logoutBtn}>
               Выйти
             </button>
@@ -180,45 +252,80 @@ export default function AdminSettingsPage() {
       </header>
 
       <main className={styles.main}>
-        <div className={styles.sidebar}>
-          <nav className={styles.nav}>
+        {/* Overlay для мобильного меню */}
+        {sidebarOpen && (
+          <div className={styles.sidebarOverlay} onClick={closeSidebar}></div>
+        )}
+        
+        <div className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
+          <div className={styles.sidebarHeader}>
             <h3>Управление</h3>
+            <button 
+              className={styles.closeSidebar} 
+              onClick={closeSidebar}
+              aria-label="Закрыть меню"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          <nav className={styles.nav}>
             <ul>
               <li>
-                <Link href="/admin/dashboard" className={styles.navLink}>
+                <Link href="/admin/dashboard" className={styles.navLink} onClick={closeSidebar}>
+                  <svg className={styles.navIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                  </svg>
                   Главная
                 </Link>
               </li>
               <li>
-                <Link href="/admin/users" className={styles.navLink}>
+                <Link href="/admin/users" className={styles.navLink} onClick={closeSidebar}>
+                  <svg className={styles.navIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
                   Пользователи
                 </Link>
               </li>
               <li>
-                <Link href="/admin/tests" className={styles.navLink}>
+                <Link href="/admin/tests" className={styles.navLink} onClick={closeSidebar}>
+                  <svg className={styles.navIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14,2 14,8 20,8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10,9 9,9 8,9"></polyline>
+                  </svg>
                   Тесты
                 </Link>
               </li>
               <li>
-                <Link href="/admin/results" className={styles.navLink}>
+                <Link href="/admin/results" className={styles.navLink} onClick={closeSidebar}>
+                  <svg className={styles.navIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22,4 12,14.01 9,11.01"></polyline>
+                  </svg>
                   Результаты
-                </Link>
-              </li>
-              <li>
-                <Link href="/admin/settings" className={`${styles.navLink} ${styles.active}`}>
-                  Настройки
                 </Link>
               </li>
             </ul>
           </nav>
         </div>
 
-        <div className={styles.content}>
+        <div className={`${styles.content} ${sidebarOpen ? styles.contentShifted : ''}`}>
           <div className={styles.section}>
-            <h2>Добавить новую настройку</h2>
+            <h2>➕ Добавить новую настройку</h2>
             <div className={styles.addForm}>
               <div className={styles.formGroup}>
-                <label>Ключ:</label>
+                <label>🔑 Ключ:</label>
                 <input
                   type="text"
                   value={newSetting.key}
@@ -227,7 +334,7 @@ export default function AdminSettingsPage() {
                 />
               </div>
               <div className={styles.formGroup}>
-                <label>Значение:</label>
+                <label>💾 Значение:</label>
                 <input
                   type="text"
                   value={newSetting.value}
@@ -240,7 +347,7 @@ export default function AdminSettingsPage() {
                 className={styles.addBtn}
                 disabled={saving}
               >
-                {saving ? 'Добавление...' : 'Добавить'}
+                {saving ? '⏳ Добавление...' : '➕ Добавить'}
               </button>
             </div>
           </div>
@@ -252,32 +359,71 @@ export default function AdminSettingsPage() {
           )}
 
           <div className={styles.section}>
-            <h2>Текущие настройки</h2>
+            <h2>📋 Текущие настройки</h2>
             <div className={styles.settingsList}>
               {settings.length === 0 ? (
-                <p className={styles.emptyMessage}>Настройки не найдены</p>
+                <p className={styles.emptyMessage}>🔍 Настройки не найдены</p>
               ) : (
                 settings.map((setting) => (
                   <div key={setting.id} className={styles.settingItem}>
                     <div className={styles.settingInfo}>
-                      <strong>{setting.key}</strong>
-                      <span>{setting.value}</span>
+                      <strong>🔑 {setting.key}</strong>
+                      {editingSetting === setting.id ? (
+                        <input
+                          type="text"
+                          value={editValue}
+                          onChange={(e) => setEditValue(e.target.value)}
+                          className={styles.formGroup}
+                          style={{
+                            padding: '0.5rem',
+                            border: '2px solid rgba(78, 122, 255, 0.3)',
+                            borderRadius: '6px',
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            color: '#fff',
+                            fontSize: '0.9rem',
+                            marginTop: '0.5rem'
+                          }}
+                        />
+                      ) : (
+                        <span>💾 {setting.value}</span>
+                      )}
                     </div>
                     <div className={styles.settingActions}>
-                      <button 
-                        onClick={() => handleSaveSetting(setting)}
-                        className={styles.saveBtn}
-                        disabled={saving}
-                      >
-                        Сохранить
-                      </button>
-                      <button 
-                        onClick={() => handleDeleteSetting(setting.key)}
-                        className={styles.deleteBtn}
-                        disabled={saving}
-                      >
-                        Удалить
-                      </button>
+                      {editingSetting === setting.id ? (
+                        <>
+                          <button 
+                            onClick={() => handleUpdateSetting(setting)}
+                            className={styles.saveBtn}
+                            disabled={saving}
+                          >
+                            ✅ Сохранить
+                          </button>
+                          <button 
+                            onClick={handleCancelEdit}
+                            className={styles.deleteBtn}
+                            disabled={saving}
+                          >
+                            ❌ Отмена
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button 
+                            onClick={() => handleEditSetting(setting)}
+                            className={styles.saveBtn}
+                            disabled={saving}
+                          >
+                            ✏️ Редактировать
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteSetting(setting.key)}
+                            className={styles.deleteBtn}
+                            disabled={saving}
+                          >
+                            🗑️ Удалить
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 ))
