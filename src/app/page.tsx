@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import styles from "./page.module.css";
-import { FaUserGraduate, FaLaptopCode, FaAtom, FaChartLine, FaBolt, FaEllipsisH, FaVk, FaTelegramPlane, FaGlobe, FaBrain, FaChartBar, FaCommentDots, FaCertificate, FaBriefcase, FaBars, FaTimes } from "react-icons/fa";
-import Link from "next/link";
+import { FaUserGraduate, FaLaptopCode, FaAtom, FaChartLine, FaBolt, FaEllipsisH, FaVk, FaTelegramPlane, FaGlobe, FaBrain, FaChartBar, FaCommentDots, FaCertificate, FaBriefcase, FaTimes } from "react-icons/fa";
 import Header from "../components/Header";
 import { useState, useEffect } from "react";
 

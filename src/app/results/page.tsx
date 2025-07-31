@@ -20,7 +20,7 @@ export default function ResultsPage() {
   const router = useRouter();
   const [sessions, setSessions] = useState<TestSession[]>([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{ id: number; fullName: string; email: string } | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);

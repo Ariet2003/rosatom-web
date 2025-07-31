@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     let adminCredentials;
     try {
       adminCredentials = JSON.parse(adminSettings.value);
-    } catch (error) {
+    } catch {
       return NextResponse.json(
         { message: 'Ошибка в настройках администратора' },
         { status: 500 }

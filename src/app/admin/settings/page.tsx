@@ -71,34 +71,6 @@ export default function AdminSettingsPage() {
     }
   };
 
-  const handleSaveSetting = async (setting: Setting) => {
-    setSaving(true);
-    try {
-      const response = await fetch('/api/settings', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          key: setting.key,
-          value: setting.value
-        }),
-      });
-
-      if (response.ok) {
-        setMessage('Настройка успешно обновлена');
-        setTimeout(() => setMessage(''), 3000);
-        setEditingSetting(null);
-      } else {
-        setMessage('Ошибка при обновлении настройки');
-      }
-    } catch (error) {
-      setMessage('Ошибка сети');
-    } finally {
-      setSaving(false);
-    }
-  };
-
   const handleAddSetting = async () => {
     if (!newSetting.key || !newSetting.value) {
       setMessage('Заполните все поля');
@@ -314,6 +286,25 @@ export default function AdminSettingsPage() {
                     <polyline points="22,4 12,14.01 9,11.01"></polyline>
                   </svg>
                   Результаты
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/settings" className={`${styles.navLink} ${styles.active}`} onClick={closeSidebar}>
+                  <svg className={styles.navIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                  </svg>
+                  Настройки
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/credentials" className={styles.navLink} onClick={closeSidebar}>
+                  <svg className={styles.navIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M15 7h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3"></path>
+                    <path d="M10 17l4-4-4-4"></path>
+                    <path d="M14 13h-8"></path>
+                  </svg>
+                  Учетные данные
                 </Link>
               </li>
             </ul>

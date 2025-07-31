@@ -83,7 +83,7 @@ export default function SignUpPage() {
       } else {
         setError(data.message || 'Ошибка регистрации');
       }
-    } catch (err) {
+    } catch {
       setError('Ошибка сети');
     } finally {
       setLoading(false);

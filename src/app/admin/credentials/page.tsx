@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import styles from './admin-credentials.module.css';
@@ -55,7 +55,7 @@ export default function AdminCredentialsPage() {
     }
   }, [router]);
 
-  const loadCurrentCredentials = async () => {
+  const loadCurrentCredentials = useCallback(async () => {
     try {
       const response = await fetch('/api/settings?key=admin_login');
       if (response.ok) {
@@ -68,7 +68,7 @@ export default function AdminCredentialsPage() {
       console.error('Ошибка загрузки учетных данных:', error);
       showMessage('Ошибка загрузки текущих учетных данных', 'error');
     }
-  };
+  }, []);
 
   const showMessage = (text: string, type: 'success' | 'error') => {
     setMessage(text);

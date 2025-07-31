@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { clearAdminTokenCookie } from '@/lib/jwt';
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     // Очищаем админ токен из cookies
     await clearAdminTokenCookie();

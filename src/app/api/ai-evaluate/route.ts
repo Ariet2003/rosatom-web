@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import OpenAI from 'openai';
 
-const prisma = new PrismaClient();
+
 
 // Инициализация OpenAI клиента
 const openai = new OpenAI({

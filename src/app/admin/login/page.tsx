@@ -77,7 +77,7 @@ export default function AdminLoginPage() {
       } else {
         setError(data.message || 'Ошибка входа');
       }
-    } catch (err) {
+    } catch {
       setError('Ошибка сети');
     } finally {
       setLoading(false);
@@ -116,7 +116,7 @@ export default function AdminLoginPage() {
       } else {
         setError(data.message || 'Ошибка проверки кода');
       }
-    } catch (err) {
+    } catch {
       setError('Ошибка сети');
     } finally {
       setLoading(false);
@@ -146,7 +146,7 @@ export default function AdminLoginPage() {
       } else {
         setError(data.message || 'Ошибка отправки кода');
       }
-    } catch (err) {
+    } catch {
       setError('Ошибка сети');
     } finally {
       setLoading(false);

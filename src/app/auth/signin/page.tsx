@@ -52,7 +52,7 @@ export default function SignInPage() {
       } else {
         setError(data.message || 'Ошибка входа');
       }
-    } catch (err) {
+    } catch {
       setError('Ошибка сети');
     } finally {
       setLoading(false);

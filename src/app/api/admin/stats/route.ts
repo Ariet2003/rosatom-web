@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getServerAdminAuth } from '@/lib/jwt';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Проверяем аутентификацию админа
     const auth = await getServerAdminAuth();

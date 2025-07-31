@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     let codeData;
     try {
       codeData = JSON.parse(verificationSettings.value);
-    } catch (error) {
+    } catch {
       return NextResponse.json(
         { message: 'Ошибка в данных кода подтверждения' },
         { status: 500 }

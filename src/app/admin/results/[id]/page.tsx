@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import styles from '../results.module.css';
@@ -65,34 +65,14 @@ export default function ResultDetailPage() {
   const router = useRouter();
   const params = useParams();
   const resultId = params.id as string;
-  
   const [result, setResult] = useState<DetailedResult | null>(null);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<{ id: number; fullName: string; email: string } | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     checkAuthAndLoadResult();
   }, [resultId]);
-
-  const checkAuthAndLoadResult = async () => {
-    try {
-      const authResponse = await fetch('/api/auth/check-admin', {
-        method: 'GET',
-        credentials: 'include'
-      });
-
-      if (authResponse.ok) {
-        loadResult();
-      } else {
-        router.push('/admin/login');
-      }
-    } catch (error) {
-      console.error('Ошибка проверки аутентификации:', error);
-      router.push('/admin/login');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const loadResult = async () => {
     try {
@@ -113,6 +93,28 @@ export default function ResultDetailPage() {
       alert('Ошибка загрузки результата');
     }
   };
+
+  const checkAuthAndLoadResult = useCallback(async () => {
+    try {
+      const authResponse = await fetch('/api/auth/check-admin', {
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      if (authResponse.ok) {
+        const authData = await authResponse.json();
+        setUser(authData.user);
+        loadResult();
+      } else {
+        router.push('/admin/login');
+      }
+    } catch (error) {
+      console.error('Ошибка проверки аутентификации:', error);
+      router.push('/admin/login');
+    } finally {
+      setLoading(false);
+    }
+  }, [router, loadResult]);
 
   const handleLogout = async () => {
     try {

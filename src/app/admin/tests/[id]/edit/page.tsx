@@ -86,7 +86,7 @@ export default function EditTestPage() {
           title: testData.title,
           description: testData.description || ''
         });
-        setQuestions(testData.questions.map((q: any) => ({
+        setQuestions(testData.questions.map((q: Question) => ({
           ...q,
           options: q.options || []
         })));
@@ -115,13 +115,13 @@ export default function EditTestPage() {
     setQuestions([...questions, newQuestion]);
   };
 
-  const updateQuestion = (index: number, field: keyof Question, value: any) => {
+  const updateQuestion = (index: number, field: keyof Question, value: string | number) => {
     const updatedQuestions = [...questions];
     updatedQuestions[index] = { ...updatedQuestions[index], [field]: value };
     setQuestions(updatedQuestions);
   };
 
-  const updateOption = (questionIndex: number, optionIndex: number, field: keyof Option, value: any) => {
+  const updateOption = (questionIndex: number, optionIndex: number, field: keyof Option, value: string | boolean) => {
     const updatedQuestions = [...questions];
     updatedQuestions[questionIndex].options[optionIndex] = {
       ...updatedQuestions[questionIndex].options[optionIndex],

@@ -90,7 +90,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Подготавливаем данные для обновления
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
 
     if (fullName) updateData.fullName = fullName;
     if (email) updateData.email = email;

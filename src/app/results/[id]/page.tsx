@@ -55,7 +55,7 @@ export default function ResultDetailPage() {
   
   const [session, setSession] = useState<TestSession | null>(null);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{ id: number; fullName: string; email: string } | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const burgerRef = useRef<HTMLButtonElement>(null);
@@ -137,17 +137,7 @@ export default function ResultDetailPage() {
     }
   };
 
-  const getCorrectOption = (question: Question) => {
-    return question.options.find(option => option.isCorrect);
-  };
 
-  const isAnswerCorrect = (answer: Answer) => {
-    if (answer.question.type === 'MULTIPLE_CHOICE') {
-      return answer.selectedOption?.isCorrect || false;
-    } else {
-      return answer.aiScore !== null && answer.aiScore > 0;
-    }
-  };
 
   const getAnswerStatus = (answer: Answer) => {
     if (answer.question.type === 'MULTIPLE_CHOICE') {

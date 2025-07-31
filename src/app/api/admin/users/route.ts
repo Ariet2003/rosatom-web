@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search') || '';
     const offset = (page - 1) * limit;
 
-    const whereClause: any = {};
+    const whereClause: Record<string, unknown> = {};
     if (search) {
       whereClause.OR = [
         { fullName: { contains: search, mode: 'insensitive' } },

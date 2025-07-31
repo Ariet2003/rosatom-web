@@ -117,7 +117,7 @@ export async function PUT(
           );
         }
 
-        const hasCorrectOption = question.options.some((opt: any) => opt.isCorrect);
+        const hasCorrectOption = question.options.some((opt: { isCorrect: boolean }) => opt.isCorrect);
         if (!hasCorrectOption) {
           return NextResponse.json(
             { error: `Вопрос ${i + 1}: выберите правильный ответ` },

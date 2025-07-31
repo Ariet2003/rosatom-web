@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { getServerAdminAuth } from '@/lib/jwt';
 
 // GET - получение списка тестов
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const auth = await getServerAdminAuth();
     if (!auth.isAuthenticated) {
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
           );
         }
 
-        const hasCorrectOption = question.options.some((opt: any) => opt.isCorrect);
+        const hasCorrectOption = question.options.some((opt: { isCorrect: boolean }) => opt.isCorrect);
         if (!hasCorrectOption) {
           return NextResponse.json(
             { error: `Вопрос ${i + 1}: выберите правильный ответ` },
